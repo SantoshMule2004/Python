@@ -70,3 +70,32 @@ nums1 = [1,2]
 nums2 = [3,4]
 
 print("Median: ", medianOftwoArrays(nums1, nums2))
+
+
+### 3Sum Closest
+# Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.
+# Return the sum of the three integers.
+# You may assume that each input would have exactly one solution.
+
+def threeSumClosest(nums, target) -> int:
+    nums.sort()
+    n = len(nums)
+    closestSum = float('inf')
+
+    for i in range(n-2):
+        l, r = i + 1, len(nums) - 1
+            
+        while l < r:
+            threeSum = nums[i] + nums[l] + nums[r]
+
+            if abs(threeSum - target) < abs(closestSum - target):
+                closestSum = threeSum
+
+            if threeSum > target:
+                r -= 1
+            elif threeSum < target:
+                l += 1
+            else:
+                return threeSum
+                
+    return closestSum
