@@ -5,9 +5,10 @@
 # def multiply(num1: str, num2: str) -> str:
 #     a=int(num1)
 #     b=int(num2)
-#     c=a*b 
+#     c=a*b
 #     d=str(c)
 #     return d
+
 
 def multiply(num1: str, num2: str) -> str:
     if "0" in [num1, num2]:
@@ -21,8 +22,8 @@ def multiply(num1: str, num2: str) -> str:
         for j in range(n):
             digit = int(num1[i]) * int(num2[j])
             res[i + j] += digit
-            res[i + j + 1] += (res[i + j] // 10)
-            res[i + j] = (res[i + j] % 10)
+            res[i + j + 1] += res[i + j] // 10
+            res[i + j] = res[i + j] % 10
 
     res, ind = res[::-1], 0
     while ind < len(res) and res[ind] == 0:
@@ -30,3 +31,53 @@ def multiply(num1: str, num2: str) -> str:
 
     res = map(str, res[ind:])
     return "".join(res)
+
+
+### Substring with Concatenation of All Words
+# You are given a string s and an array of strings words. All the strings of words are of the same length.
+# A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
+
+
+def findSubstring(s, words):
+    ans = []
+    if not s or not words:
+        return ans
+
+    freqMap = {}
+    for word in words:
+        freqMap[word] = freqMap.get(word, 0) + 1
+
+    n = len(s)
+    wordCount = len(words)
+    wordSize = len(words[0])
+    windowSize = wordCount * wordSize
+
+    for offset in range(wordSize):
+        left = offset
+        curr = {}
+        count = 0
+
+        for right in range(offset, n, wordSize):
+            word = s[right : right + wordSize]
+
+            if word in freqMap:
+                curr[word] = curr.get(word, 0) + 1
+                count += 1
+
+                while curr[word] > freqMap[word]:
+                    leftWord = s[left : left + wordSize]
+                    curr[leftWord] -= 1
+                    left += wordSize
+                    count -= 1
+
+                if count == wordCount:
+                    ans.append(left)
+                    leftWord = s[left : left + wordSize]
+                    curr[leftWord] -= 1
+                    left += wordSize
+                    count -= 1
+            else:
+                curr.clear()
+                count = 0
+                left = right + wordSize
+    return ans
