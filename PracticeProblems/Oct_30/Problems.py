@@ -33,6 +33,34 @@ def multiply(num1: str, num2: str) -> str:
     return "".join(res)
 
 
+### Letter Combinations of a Phone Number
+# Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+# A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+from collections import deque
+from typing import List
+
+def letterCombinations(self, digits: str) -> List[str]:
+        ans = []
+        if len(digits) < 1:
+            return ans
+
+        q = deque()
+        q.append("")
+        chars = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]
+
+        for d in digits:
+            digit = int(d)
+            qSize = len(q)
+            while qSize > 0:
+                front = q.popleft()
+                for char in chars[digit]:
+                    q.append(front + char)
+                qSize -= 1
+
+        return list(q)
+
+
 ### Substring with Concatenation of All Words
 # You are given a string s and an array of strings words. All the strings of words are of the same length.
 # A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
